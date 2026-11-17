@@ -43,7 +43,7 @@ const Index: React.FC<IndexProps> = ({ setIsActive }) => {
           {/* <Footer /> */}
         </div>
         <Image
-          src={links[selectedLink.index].thumbnail}
+          title={links[selectedLink.index].title}
           isActive={selectedLink.isActive}
         />
         {/* <p>{links[selectedLink.index].thumbnail}</p> */}
@@ -53,3 +53,4 @@ const Index: React.FC<IndexProps> = ({ setIsActive }) => {
 };
 
 export default Index;
+

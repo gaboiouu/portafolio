@@ -21,6 +21,8 @@ const links: Link[] = [
     href: '/#projects',
     thumbnail: '/assets/nav-link-previews/projects.png'
   },
+  { title: 'Servicios', href: '/#servicios', thumbnail: '/assets/nav-link-previews/about.png' },
+  { title: 'Experiencia', href: '/#experiencia', thumbnail: '/assets/nav-link-previews/about.png' },
   {
     title: 'Contacto',
     href: '/#contact',
@@ -29,3 +31,5 @@ const links: Link[] = [
 ];
 
 export { links };
+
+

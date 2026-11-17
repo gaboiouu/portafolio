@@ -17,9 +17,9 @@ interface HeaderProps {
 
 const NAV_LINKS = [
   { label: "SOBRE MÍ", href: "#about" },
+  { label: "SKILLS", href: "#skills" },
   { label: "PROYECTOS", href: "#projects" },
   { label: "SERVICIOS", href: "#servicios" },
-  { label: "SKILLS", href: "#skills" },
   { label: "EXPERIENCIA", href: "#experiencia" },
 ];
 
@@ -32,7 +32,7 @@ const Header = ({ loader }: HeaderProps) => {
         "transition-colors delay-100 duration-500 ease-in"
       )}
       style={{
-        background: isActive ? "hsl(var(--background) / .8)" : "transparent",
+        background: isActive ? "hsl(var(--background) / .95)" : "hsl(var(--background) / .78)",
       }}
       initial={{
         y: -80,
@@ -55,7 +55,7 @@ const Header = ({ loader }: HeaderProps) => {
         {/* Navegación central con estilo técnico [ ... ] */}
         <nav className={styles.centerNav} aria-label="Navegación principal">
           {NAV_LINKS.map((link) => (
-            <Link key={link.href} href={link.href} className={styles.navLink}>
+            <Link key={link.href} href={`/${link.href}`} className={styles.navLink}>
               <span className={styles.bracket}>[</span>
               <span>{link.label}</span>
               <span className={styles.bracket}>]</span>
@@ -107,3 +107,5 @@ const Header = ({ loader }: HeaderProps) => {
 };
 
 export default Header;
+
+

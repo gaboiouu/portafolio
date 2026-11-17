@@ -1,5 +1,6 @@
 .header {
-  z-index: 9;
+  z-index: 40;
+  top: 0;
   // background-color: hsl(var(--background) / .8);
   position: fixed;
   width: 100%;
@@ -42,9 +43,9 @@
       transform: translateX(-50%);
       display: none;
       align-items: center;
-      gap: 1.25rem;
+      gap: 1rem;
 
-      @media (min-width: 860px) {
+      @media (min-width: 1100px) {
         display: flex;
       }
 
@@ -53,10 +54,10 @@
         left: auto;
         text-decoration: none;
         font-family: monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-        font-size: 13px;
-        font-weight: 500;
+        font-size: 15px;
+        font-weight: 700;
         letter-spacing: 0.05em;
-        color: hsl(var(--muted-foreground));
+        color: hsl(var(--foreground) / 0.82);
         transition: color 0.2s ease, opacity 0.2s ease;
         text-transform: uppercase;
         display: inline-flex;
@@ -163,3 +164,4 @@
     }
   }
 }
+
