@@ -57,7 +57,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={[archivoBlack.className].join(" ")}>
+    <html lang="es" className={[archivoBlack.className].join(" ")}>
       <head>
         <Script
           defer
@@ -94,3 +94,4 @@ export default function RootLayout({
     </html>
   );
 }
+

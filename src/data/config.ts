@@ -19,7 +19,7 @@ const config = {
     "Spline",
   ],
   author: "Aarón Silva",
-  email: "aaron@example.com",
+  email: "silvagabo1200@gmail.com",
   site: "https://aaronsilva.com",
 
   get ogImg() {
@@ -27,10 +27,11 @@ const config = {
   },
   social: {
     twitter: "https://x.com/",
-    linkedin: "https://www.linkedin.com/",
-    instagram: "https://www.instagram.com/",
+    linkedin: "https://www.linkedin.com/in/aar%C3%B3n-gabriel-silva-chorres-b13a50370/",
+    instagram: "https://www.instagram.com/_silva_aaron/",
     facebook: "https://www.facebook.com/",
-    github: "https://github.com/",
+    github: "https://github.com/gaboiouu",
   },
 };
 export { config };
+
