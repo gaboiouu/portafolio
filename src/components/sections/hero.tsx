@@ -42,27 +42,16 @@ const HeroSection = () => {
                     <br className="md:hidden" />
                   </p>
                 </BlurIn>
-                <BlurIn delay={1}>
-                  <Tooltip delayDuration={300}>
-                    <TooltipTrigger asChild>
-                      <h1
+                <BlurIn delay={1}><h1
                         className={cn(
                           "font-thin text-6xl text-transparent text-slate-800 ml-1 text-left",
                           "cursor-default text-edge-outline font-display sm:text-7xl md:text-9xl "
                         )}
                       >
                         {config.author.split(" ")[0]}
-                        <br className="md:block hiidden" />
+                        <br className="md:block hidden" />
                         {config.author.split(" ")[1]}
                       </h1>
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="top"
-                      className="dark:bg-white dark:text-black"
-                    >
-                      bienvenido a mi portafolio
-                    </TooltipContent>
-                  </Tooltip>
                 </BlurIn>
                 <BlurIn delay={1.2}>
                   <p
@@ -77,9 +66,7 @@ const HeroSection = () => {
               </div>
               <div className="mt-8 md:ml-2 flex flex-col gap-3">
                 <Link
-                  href={
-                    "#"
-                  }
+                  href="/assets/cv-aaron-silva.pdf"
                   target="_blank"
                   className="flex-1"
                 >
@@ -137,3 +124,5 @@ const HeroSection = () => {
 };
 
 export default HeroSection;
+
+

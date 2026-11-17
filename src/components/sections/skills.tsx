@@ -11,9 +11,9 @@ const SkillsSection = () => {
           <BoxReveal width="100%">
             <h2
               className={cn(
-                "bg-clip-text text-4xl text-center text-transparent md:text-7xl",
-                "bg-gradient-to-b from-black/80 to-black/50",
-                "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 "
+                "text-4xl text-center uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl",
+                "text-violet-600 dark:text-violet-400",
+                
               )}
             >
               SKILLS
@@ -21,7 +21,7 @@ const SkillsSection = () => {
           </BoxReveal>
         </Link>
         <p className="mx-auto mt-4 line-clamp-4 max-w-3xl font-normal text-base text-center text-neutral-300">
-          (hint: press a key)
+          Explora las tecnologías del teclado
         </p>
       </div>
     </section>
@@ -29,3 +29,5 @@ const SkillsSection = () => {
 };
 
 export default SkillsSection;
+
+
