@@ -18,7 +18,7 @@ export function AboutSection() {
           <p className="mb-5 font-sans text-xs font-bold uppercase tracking-[0.25em] text-slate-500 dark:text-slate-400">Aarón Silva Chorres</p>
           <h2 className="max-w-3xl text-4xl uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">Desarrollo web <span className="text-violet-600 dark:text-violet-400">&amp; análisis de datos.</span></h2>
           <div className="mt-8 max-w-2xl space-y-5 font-sans text-base leading-7 text-slate-700 dark:text-slate-200 sm:text-lg">
-            <p>Soy Aarón, desarrollador web junior y estudiante de Ingeniería de Sistemas e Informática en la UTP. Me gusta construir experiencias digitales claras, funcionales y pensadas para las personas.</p>
+            <p>Soy Aarón, Ingeniero de Sistemas e Informática y Desarrollador Full Stack Junior. Me enfoco en construir experiencias digitales claras, funcionales y de alto rendimiento.</p>
             <p>Combino desarrollo web, datos y automatización para resolver problemas reales. Soy autodidacta y disfruto aprender nuevas herramientas en cada proyecto.</p>
           </div>
         </div>
@@ -26,7 +26,7 @@ export function AboutSection() {
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem]">
             <Image src="/assets/aaron-retrato.jpeg" alt="Aarón Silva al aire libre" fill sizes="(max-width: 768px) 80vw, 360px" className="object-cover object-[50%_58%]" />
           </div>
-          <p className="mt-4 font-mono text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400">Aarón Silva Chorres <span aria-hidden="true">/</span> Desarrollador web</p>
+          <p className="mt-4 font-mono text-xs uppercase tracking-[0.2em] text-slate-600 dark:text-slate-400">Aarón Silva Chorres <span aria-hidden="true">/</span> Ingeniero &amp; Desarrollador Full Stack Junior</p>
         </div>
       </div>
     </section>
@@ -87,7 +87,7 @@ export function ExperienceSection() {
   const move = (step: number) => setActive(value => (value + step + stations.length) % stations.length);
   return <section id="experiencia" className="relative z-10 mx-auto max-w-7xl scroll-mt-20 px-5 py-24 sm:px-8">
     <h2 className={styles.heading}>Mi <span>experiencia.</span></h2>
-    <div className={styles.experienceHeader}><p><GraduationCap size={24}/> Ingeniería de Sistemas e Informática · UTP</p><div><button onClick={() => move(-1)} aria-label="Experiencia anterior"><ArrowLeft size={20}/></button><button onClick={() => move(1)} aria-label="Experiencia siguiente"><ArrowRight size={20}/></button></div></div>
+    <div className={styles.experienceHeader}><p><GraduationCap size={24}/> Ingeniería de Sistemas e Informática</p><div><button onClick={() => move(-1)} aria-label="Experiencia anterior"><ArrowLeft size={20}/></button><button onClick={() => move(1)} aria-label="Experiencia siguiente"><ArrowRight size={20}/></button></div></div>
     <Dialog>
       
       <div className={styles.stations}>

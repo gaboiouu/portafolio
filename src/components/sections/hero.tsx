@@ -60,7 +60,7 @@ const HeroSection = () => {
                       "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
                     )}
                   >
-                    Desarrollador de Software
+                    Ingeniero &amp; Desarrollador Full Stack Junior
                   </p>
                 </BlurIn>
               </div>

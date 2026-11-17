@@ -1,9 +1,9 @@
 const config = {
   title: "Aarón Silva | Portafolio",
   description: {
-    long: "Explora el portafolio de Aarón Silva, desarrollador enfocado en experiencias web interactivas y tecnologías modernas.",
+    long: "Explora el portafolio de Aarón Silva, Ingeniero y Desarrollador Full Stack Junior enfocado en experiencias web interactivas, software y datos.",
     short:
-      "Descubre el portafolio de Aarón Silva, experiencias web interactivas y desarrollo de software.",
+      "Portafolio de Aarón Silva, Ingeniero y Desarrollador Full Stack Junior.",
   },
   keywords: [
     "Aarón",
