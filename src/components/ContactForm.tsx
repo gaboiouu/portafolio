@@ -7,7 +7,7 @@ import { Textarea } from "./ui/ace-textarea";
 import { cn } from "@/lib/utils";
 import { useToast } from "./ui/use-toast";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
+
 
 const ContactForm = () => {
   const [fullName, setFullName] = React.useState("");
@@ -16,7 +16,7 @@ const ContactForm = () => {
   const [loading, setLoading] = React.useState(false);
 
   const { toast } = useToast();
-  const router = useRouter();
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ const ContactForm = () => {
         }),
       });
       const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!res.ok) throw new Error(data.error || "No se pudo enviar el mensaje.");
       toast({
         title: "¡Gracias!",
         description: "Te responderé lo antes posible.",
@@ -45,14 +45,11 @@ const ContactForm = () => {
       setFullName("");
       setEmail("");
       setMessage("");
-      const timer = setTimeout(() => {
-        router.push("/");
-        clearTimeout(timer);
-      }, 1000);
+
     } catch (err) {
       toast({
         title: "Error",
-        description: "¡Algo salió mal! Por favor verifica los campos.",
+        description: err instanceof Error ? err.message : "No se pudo enviar el mensaje. Inténtalo de nuevo.",
         className: cn(
           "top-0 w-full flex justify-center fixed md:max-w-7xl md:top-4 md:right-4"
         ),
@@ -93,6 +90,8 @@ const ContactForm = () => {
           placeholder="Cuéntame sobre tu proyecto..."
           id="content"
           required
+          minLength={10}
+          maxLength={5000}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
@@ -145,3 +144,4 @@ const BottomGradient = () => {
     </>
   );
 };
+

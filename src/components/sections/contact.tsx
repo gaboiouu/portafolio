@@ -14,17 +14,17 @@ import { cn } from "@/lib/utils";
 import { config } from "@/data/config";
 const ContactSection = () => {
   return (
-    <section id="contact" className="min-h-screen max-w-7xl mx-auto ">
+    <section id="contact" className="relative z-10 min-h-screen max-w-7xl mx-auto px-5">
       <Link href={"#contact"}>
         <h2
           className={cn(
-            "bg-clip-text text-4xl text-center text-transparent md:text-7xl pt-16",
-            "bg-gradient-to-b from-black/80 to-black/50",
-            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50"
+            "text-4xl text-center uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl pt-16",
+            "text-slate-900 dark:text-white",
+            
           )}
         >
           TRABAJEMOS <br />
-          JUNTOS
+          <span className="text-violet-600 dark:text-violet-400">JUNTOS.</span>
         </h2>
       </Link>
       <div className="grid grid-cols-1 md:grid-cols-2 z-[9999]">
@@ -36,9 +36,9 @@ const ContactSection = () => {
               <a
                 target="_blank"
                 href={`mailto:${config.email}`}
-                className="text-gray-200 cursor-can-hover rounded-lg"
+                className="text-violet-600 dark:text-violet-300 cursor-can-hover rounded-lg"
               >
-                {config.email.replace(/@/g, "(at)")}
+                {config.email}
               </a>{" "}
               o completa el formulario a continuación.
             </CardDescription>
@@ -52,3 +52,5 @@ const ContactSection = () => {
   );
 };
 export default ContactSection;
+
+
