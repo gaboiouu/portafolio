@@ -1,0 +1,69 @@
+.gallery {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  min-height: 410px; margin-top: 2rem; padding: 2rem 3rem 1rem; perspective: 1100px;
+  &::after { content: ""; position: absolute; left: 23%; right: 23%; bottom: 8%; height: 20px; background: #8b5cf6; filter: blur(35px); opacity: .48; pointer-events: none; }
+}
+.monitor { position: relative; width: min(62%, 660px); z-index: 3; filter: drop-shadow(0 18px 28px rgba(0,0,0,.45)); }
+.monitorButton { display: block; width: 100%; overflow: hidden; border: 6px solid #262a3a; border-bottom-width: 9px; border-radius: 14px; background: #080d1a; color: white; text-align: left; box-shadow: 0 0 0 1px #9d93c6, 0 0 45px rgba(139,92,246,.25); transition: transform .25s, box-shadow .25s; cursor: pointer;
+  &:hover { transform: translateY(-4px); box-shadow: 0 0 0 1px #c4b5fd, 0 0 55px rgba(139,92,246,.45); }
+  &:focus-visible { outline: 3px solid #a78bfa; outline-offset: 5px; }
+}
+.browserBar { height: 24px; display: flex; align-items: center; gap: 5px; padding: 0 10px; background: linear-gradient(#34384d,#202438);
+  i { width: 7px; height: 7px; border-radius: 50%; background: #ff6b70; }
+  i:nth-child(2) { background: #ffc25c; } i:nth-child(3) { background: #62d99b; }
+  span { display: block; width: 40%; height: 8px; margin: auto; border-radius: 8px; background: #4a4e68; }
+}
+.screenContent { position: relative; width: 100%; height: 100%; min-height: 0; overflow: hidden; color: white; }
+.monitorButton .screenContent { aspect-ratio: 16 / 8.5; }
+.projectIntro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: 7% 9%; background: radial-gradient(ellipse at 80% 85%, rgba(148,92,255,.22), transparent 55%); }
+.screenCategory { font: 600 clamp(8px, .75vw, 11px)/1.4 sans-serif; letter-spacing: .13em; color: #c4b5fd; }
+.screenTitle { display: block; margin-top: 12px; max-width: 95%; font-size: clamp(18px, 2.8vw, 34px); line-height: 1.12; }
+.screenDescription { max-width: 80%; margin-top: 12px; font: 400 clamp(11px, 1vw, 14px)/1.5 sans-serif; color: #d2d7e8; }
+.previewNote { display: flex; align-items: center; gap: 6px; margin-top: 18px; font: 11px sans-serif; color: #bfc4d7; }
+.monitorFooter { display: flex; justify-content: center; align-items: center; gap: 5px; padding: 10px; background: #242839; color: #e8e4fc; font: 600 12px sans-serif; }
+.monitorNeck { width: 15%; height: 36px; margin: 0 auto; background: linear-gradient(90deg,#303342,#585a6c,#303342); clip-path: polygon(20% 0,80% 0,90% 100%,10% 100%); }
+.monitorBase { width: 30%; height: 9px; margin: auto; border-radius: 50% 50% 3px 3px; background: linear-gradient(#696b7c,#2a2d3b); }
+.sideScreen { position: absolute; width: 27%; aspect-ratio: 16 / 10; overflow: hidden; border: 3px solid #3a3a51; border-radius: 10px; background: #080d1a; box-shadow: 0 16px 35px #0008; cursor: pointer; transition: filter .2s; filter: brightness(.8); z-index: 1;
+  &:hover, &:focus-visible { filter: brightness(1); outline: 2px solid #a78bfa; }
+  .screenTitle { font-size: clamp(12px, 1.4vw, 18px); } .screenCategory { font-size: 8px; }
+}
+.sideLeft { left: 3%; transform: rotateY(25deg) rotateZ(-2deg); } .sideRight { right: 3%; transform: rotateY(-25deg) rotateZ(2deg); }
+.arrow { position: absolute; top: 43%; z-index: 4; display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #8d86a9; border-radius: 50%; background: #080d1ae8; color: #fff; transition: background .2s; &:hover { background: #7c3aed; } &:focus-visible { outline: 2px solid #a78bfa; outline-offset: 3px; } }
+.arrowLeft { left: 0; } .arrowRight { right: 0; }
+.dots { display: flex; justify-content: center; gap: 10px; margin-top: 8px; button { width: 10px; height: 10px; border-radius: 50%; background: #77758b; &:focus-visible { outline: 2px solid #a78bfa; outline-offset: 4px; } } .activeDot { background: #a78bfa; box-shadow: 0 0 12px #a78bfa; } }
+@media (max-width: 640px) { .gallery { min-height: 280px; padding: 1rem 2rem; margin-top: 2rem; } .monitor { width: 88%; } .sideScreen { width: 27%; opacity: .45; } .sideLeft { left: 0; } .sideRight { right: 0; } .arrow { width: 38px; height: 38px; top: 40%; } .screenDescription { display: none; } .previewNote { margin-top: 10px; } }
+@media (prefers-reduced-motion: reduce) { .monitorButton, .sideScreen, .arrow { transition: none; } }
+
+// Overlap incoming and outgoing monitors so navigation never pauses on an empty stage.
+.gallery {
+  min-height: clamp(340px, 43vw, 560px);
+  isolation: isolate;
+  &::after {
+    left: 18%; right: 18%; bottom: 5%; height: 28px;
+    background: radial-gradient(ellipse, #d5a4ff 0%, #a855f7 24%, #7c3aed 48%, transparent 72%);
+    filter: blur(10px); opacity: .95; z-index: 0;
+  }
+  &::before {
+    content: ""; position: absolute; inset: 10% 12% 0;
+    background: radial-gradient(ellipse at 50% 85%, rgba(124,58,237,.28), transparent 65%);
+    pointer-events: none; z-index: 0;
+  }
+}
+.monitor { position: absolute; bottom: 9%; width: min(62%, 660px); }
+.monitorButton {
+  border-color: #656779;
+  border-top-color: #b3b2c5;
+  border-left-color: #8d8b9f;
+  background: #111528;
+  box-shadow: 0 0 0 1px #d0c5f5, 0 0 28px #8b5cf64d, inset 0 1px 0 #fff6;
+}
+.monitorFooter { background: linear-gradient(115deg, #4b4c61, #77788a 48%, #414354); color: #fff; }
+.monitorNeck { background: linear-gradient(90deg, #525365, #aaa9bb 45%, #626376); }
+.monitorBase { background: linear-gradient(#bdbbcd, #676779 55%, #454658); box-shadow: 0 5px 16px #a855f780; }
+.projectIntro { background: radial-gradient(ellipse at 85% 85%, rgba(158,100,255,.45), transparent 65%); }
+.sideScreen { filter: brightness(.95); border-color: #78748e; box-shadow: 0 12px 25px #0008, 0 0 18px #8b5cf626; }
+@media (max-width: 640px) {
+  .gallery { min-height: 310px; }
+  .monitor { width: 80%; bottom: 12%; }
+  .gallery::after { left: 10%; right: 10%; bottom: 8%; }
+}

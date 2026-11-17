@@ -1,145 +1,68 @@
 "use client";
+
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import React from "react";
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalTrigger,
-} from "../ui/animated-modal";
-import { FloatingDock } from "../ui/floating-dock";
-import Link from "next/link";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Monitor } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { portfolioProjects, type PortfolioProject } from "@/data/portfolio-projects";
+import styles from "./projects.module.scss";
 
-import SmoothScroll from "../smooth-scroll";
-import projects, { Project } from "@/data/projects";
-import { cn } from "@/lib/utils";
+function ScreenContent({ project, compact = false }: { project: PortfolioProject; compact?: boolean }) {
+  return <div className={`${styles.screenContent} bg-gradient-to-br ${project.accent}`}>
+    {project.image ? <Image src={project.image} alt={`Captura de ${project.title}`} fill sizes="(max-width: 768px) 90vw, 700px" className="object-cover object-top" /> : <div className={styles.projectIntro}>
+      <span className={styles.screenCategory}>{project.category}</span>
+      <span className={styles.screenTitle}>{project.title}</span>
+      {!compact && <span className={styles.screenDescription}>{project.description}</span>}
+      {!compact && <span className={styles.previewNote}><Monitor size={14}/> Captura próximamente</span>}
+    </div>}
+  </div>;
+}
 
-const ProjectsSection = () => {
-  return (
-    <section id="projects" className="max-w-7xl mx-auto md:h-[130vh]">
-      <Link href={"#projects"}>
-        <h2
-          className={cn(
-            "bg-clip-text text-4xl text-center text-transparent md:text-7xl pt-16",
-            "bg-gradient-to-b from-black/80 to-black/50",
-            "dark:bg-gradient-to-b dark:from-white/80 dark:to-white/20 dark:bg-opacity-50 mb-32"
-          )}
-        >
-          Proyectos
-        </h2>
-      </Link>
-      <div className="grid grid-cols-1 md:grid-cols-3">
-        {projects.map((project, index) => (
-          <Modall key={project.src} project={project} />
-        ))}
-      </div>
-    </section>
-  );
-};
-const Modall = ({ project }: { project: Project }) => {
-  return (
-    <div className="flex items-center justify-center">
-      <Modal>
-        <ModalTrigger className="bg-transparent flex justify-center group/modal-btn">
-          <div
-            className="relative w-[400px] h-auto rounded-lg overflow-hidden"
-            style={{ aspectRatio: "3/2" }}
-          >
-            <Image
-              className="absolute w-full h-full top-0 left-0 hover:scale-[1.05] transition-all"
-              src={project.src}
-              alt={project.title}
-              width={300}
-              height={300}
-            />
-            <div className="absolute w-full h-1/2 bottom-0 left-0 bg-gradient-to-t from-black via-black/85 to-transparent pointer-events-none">
-              <div className="flex flex-col h-full items-start justify-end p-6">
-                <div className="text-lg text-left">{project.title}</div>
-                <div className="text-xs bg-white text-black rounded-lg w-fit px-2">
-                  {project.category}
-                </div>
-              </div>
-            </div>
-          </div>
-        </ModalTrigger>
-        <ModalBody className="md:max-w-4xl md:max-h-[80%] overflow-auto">
-          <SmoothScroll isInsideModal={true}>
-            <ModalContent>
-              <ProjectContents project={project} />
-            </ModalContent>
-          </SmoothScroll>
-          <ModalFooter className="gap-4">
-            <button className="px-2 py-1 bg-gray-200 text-black dark:bg-black dark:border-black dark:text-white border border-gray-300 rounded-md text-sm w-28">
-              Cerrar
-            </button>
-            <Link href={project.live} target="_blank">
-              <button className="bg-black text-white dark:bg-white dark:text-black text-sm px-2 py-1 rounded-md border border-black w-28">
-                Ver Proyecto
-              </button>
-            </Link>
-          </ModalFooter>
-        </ModalBody>
-      </Modal>
+export default function ProjectsSection() {
+  const [{ active, direction }, setGallery] = useState({ active: 0, direction: 1 });
+  const reduceMotion = useReducedMotion();
+  const count = portfolioProjects.length;
+  const project = portfolioProjects[active];
+  const previous = (active - 1 + count) % count;
+  const next = (active + 1) % count;
+  const move = (step: number) => setGallery(current => ({ active: (current.active + step + count) % count, direction: step }));
+  const choose = (index: number) => { if (index !== active) setGallery({ active: index, direction: index === next ? 1 : -1 }); };
+
+  return <section id="projects" className="relative z-10 mx-auto max-w-7xl scroll-mt-20 px-5 py-24 sm:px-8 md:py-32">
+    <h2 className="text-4xl uppercase leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">Mis <span className="text-violet-600 dark:text-violet-400">proyectos.</span></h2>
+    <p className="mt-4 font-sans text-slate-600 dark:text-slate-300">Explora mis proyectos y descubre qué hice en cada uno.</p>
+    <div className={styles.gallery} role="region" aria-label="Galería de proyectos">
+      <button type="button" onClick={() => move(-1)} aria-label="Proyecto anterior" className={`${styles.arrow} ${styles.arrowLeft}`}><ArrowLeft size={20}/></button>
+      <motion.button key={`left-${previous}`} initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: -45, rotateY: 25, rotateZ: -2, scale: 0.9 }} animate={{ opacity: 1, x: 0, rotateY: 25, rotateZ: -2, scale: 1 }} transition={{ duration: 0.3 }} type="button" onClick={() => move(-1)} aria-label={`Ver ${portfolioProjects[previous].title}`} className={`${styles.sideScreen} ${styles.sideLeft}`}><ScreenContent project={portfolioProjects[previous]} compact /></motion.button>
+      <Dialog>
+        <AnimatePresence initial={false} mode="sync" custom={direction}>
+        <motion.div key={active} className={styles.monitor} custom={direction}
+          variants={{ enter: (d: number) => reduceMotion ? { opacity: 0 } : { opacity: 0, x: d * 170, rotateY: d * -28, scale: 0.9 }, center: { opacity: 1, x: 0, rotateY: 0, scale: 1 }, exit: (d: number) => reduceMotion ? { opacity: 0 } : { opacity: 0, x: d * -170, rotateY: d * 28, scale: 0.9 } }}
+          initial="enter" animate="center" exit="exit"
+          transition={{ duration: reduceMotion ? 0.12 : 0.32, ease: [0.22, 1, 0.36, 1] }}>
+          <DialogTrigger asChild><button type="button" className={styles.monitorButton} aria-label={`Ver detalles de ${project.title}`}>
+            <span className={styles.browserBar} aria-hidden="true"><i/><i/><i/><span/></span>
+            <ScreenContent project={project}/>
+            <span className={styles.monitorFooter}><span>Ver proyecto</span><ArrowUpRight size={16}/></span>
+          </button></DialogTrigger>
+          <div className={styles.monitorNeck} aria-hidden="true"/><div className={styles.monitorBase} aria-hidden="true"/>
+        </motion.div>
+        </AnimatePresence>
+        <DialogContent className="max-h-[90dvh] max-w-3xl overflow-y-auto rounded-2xl border-slate-300 bg-white p-0 dark:border-white/10 dark:bg-slate-950">
+          <div className="relative aspect-video overflow-hidden"><ScreenContent project={project}/></div>
+          <div className="space-y-5 p-6 sm:p-9"><p className="font-mono text-xs tracking-widest text-violet-600 dark:text-violet-300">{project.category}</p><DialogTitle className="text-3xl leading-tight sm:text-4xl">{project.title}</DialogTitle><DialogDescription className="font-sans text-base leading-7 text-slate-600 dark:text-slate-300">{project.description}</DialogDescription><div><h4 className="mb-2 text-sm">¿Qué hice?</h4><p className="font-sans leading-7 text-slate-600 dark:text-slate-300">{project.contribution}</p></div><div className="flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-slate-300 px-3 py-1 font-sans text-xs dark:border-white/15">{tag}</span>)}</div>{project.repository && <a href={project.repository} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-sans font-bold text-violet-600 hover:underline dark:text-violet-300">Ver repositorio <ArrowUpRight size={18}/></a>}</div>
+        </DialogContent>
+      </Dialog>
+      <motion.button key={`right-${next}`} initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 45, rotateY: -25, rotateZ: 2, scale: 0.9 }} animate={{ opacity: 1, x: 0, rotateY: -25, rotateZ: 2, scale: 1 }} transition={{ duration: 0.3 }} type="button" onClick={() => move(1)} aria-label={`Ver ${portfolioProjects[next].title}`} className={`${styles.sideScreen} ${styles.sideRight}`}><ScreenContent project={portfolioProjects[next]} compact /></motion.button>
+      <button type="button" onClick={() => move(1)} aria-label="Proyecto siguiente" className={`${styles.arrow} ${styles.arrowRight}`}><ArrowRight size={20}/></button>
     </div>
-  );
-};
-export default ProjectsSection;
+    <div className={styles.dots} aria-label="Elegir proyecto">{portfolioProjects.map((item, index) => <button key={item.number} type="button" aria-label={`Mostrar ${item.title}`} aria-pressed={active === index} onClick={() => choose(index)} className={active === index ? styles.activeDot : ""}/>)}</div>
+    <p className="mt-5 text-center font-sans text-sm text-slate-600 dark:text-slate-300" aria-live="polite">{project.title} · selecciona la pantalla para ver los detalles</p>
+    <div className="mt-8 text-center"><a href="https://github.com/gaboiouu" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-sans font-bold text-violet-600 hover:underline dark:text-violet-300">Visita mi GitHub <ArrowUpRight size={18}/></a></div>
+  </section>;
+}
 
-const ProjectContents = ({ project }: { project: Project }) => {
-  return (
-    <>
-      <h4 className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-100 font-bold text-center mb-8">
-        {project.title}
-      </h4>
-      <div className="flex flex-col md:flex-row md:justify-evenly max-w-screen overflow-hidden md:overflow-visible">
-        <div className="flex flex-row md:flex-col-reverse justify-center items-center gap-2 text-3xl mb-8">
-          <p className="text-sm mt-1 text-neutral-600 dark:text-neutral-500">
-            Frontend
-          </p>
-          {project.skills.frontend?.length > 0 && (
-            <FloatingDock items={project.skills.frontend} />
-          )}
-        </div>
-        {project.skills.backend?.length > 0 && (
-          <div className="flex flex-row md:flex-col-reverse justify-center items-center gap-2 text-3xl mb-8">
-            <p className="text-sm mt-1 text-neutral-600 dark:text-neutral-500">
-              Backend
-            </p>
-            <FloatingDock items={project.skills.backend} />
-          </div>
-        )}
-      </div>
-      {/* <div className="flex justify-center items-center">
-        {project.screenshots.map((image, idx) => (
-          <motion.div
-            key={"images" + idx}
-            style={{
-              rotate: Math.random() * 20 - 10,
-            }}
-            whileHover={{
-              scale: 1.1,
-              rotate: 0,
-              zIndex: 100,
-            }}
-            whileTap={{
-              scale: 1.1,
-              rotate: 0,
-              zIndex: 100,
-            }}
-            className="rounded-xl -mr-4 mt-4 p-1 bg-white dark:bg-neutral-800 dark:border-neutral-700 border border-neutral-100 flex-shrink-0 overflow-hidden"
-          >
-            <Image
-              src={`${project.src.split("1.png")[0]}${image}`}
-              alt="screenshots"
-              width="500"
-              height="500"
-              className="rounded-lg h-20 w-20 md:h-40 md:w-40 object-cover flex-shrink-0"
-            />
-          </motion.div>
-        ))}
-      </div> */}
-      {project.content}
-    </>
-  );
-};
+
+
+
