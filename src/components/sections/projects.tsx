@@ -1,22 +1,37 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, ArrowUpRight, Monitor } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Monitor, House, Github, Leaf } from "lucide-react";
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { portfolioProjects, type PortfolioProject } from "@/data/portfolio-projects";
 import styles from "./projects.module.scss";
 
 function ScreenContent({ project, compact = false }: { project: PortfolioProject; compact?: boolean }) {
   return <div className={`${styles.screenContent} bg-gradient-to-br ${project.accent}`}>
-    {project.image ? <Image src={project.image} alt={`Captura de ${project.title}`} fill sizes="(max-width: 768px) 90vw, 700px" className="object-cover object-top" /> : <div className={styles.projectIntro}>
+    {project.title === "Quietud y Belleza" ? <div className={styles.quietudCover}><span className={styles.quietudMark}><Leaf strokeWidth={1.5}/></span><strong>Quietud y Belleza</strong><span>Belleza que se siente. Bienestar que permanece.</span></div> : project.title === "Gestión Inmobiliaria" ? <div className={styles.inmoCover}><div className={styles.inmoLogo}><span className={styles.inmoMark}><House strokeWidth={1.7}/></span><strong>Gestión Inmobiliaria</strong></div>{!compact && <span className={styles.inmoTagline}>Sistema de escritorio</span>}</div> : project.image ? <Image src={project.image} alt={`Captura de ${project.title}`} fill sizes="(max-width: 768px) 90vw, 700px" className="object-cover object-top" /> : <div className={styles.projectIntro}>
       <span className={styles.screenCategory}>{project.category}</span>
       <span className={styles.screenTitle}>{project.title}</span>
       {!compact && <span className={styles.screenDescription}>{project.description}</span>}
       {!compact && <span className={styles.previewNote}><Monitor size={14}/> Captura próximamente</span>}
     </div>}
   </div>;
+}
+
+function ProjectScreenshots({ project }: { project: PortfolioProject }) {
+  const [index, setIndex] = useState(0);
+  const shots = project.screenshots;
+  const reduceMotion = useReducedMotion();
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (!shots || shots.length < 2 || paused || reduceMotion) return;
+    const timer = window.setInterval(() => setIndex(current => (current + 1) % shots.length), 5000);
+    return () => window.clearInterval(timer);
+  }, [shots, paused, reduceMotion]);
+  if (!shots?.length) return <div className="relative aspect-video overflow-hidden"><ScreenContent project={project}/></div>;
+  const current = shots[index];
+  return <div onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setPaused(false); }} className="bg-slate-100 p-4 dark:bg-slate-900 sm:p-6"><div className="relative flex min-h-[160px] items-center justify-center overflow-hidden rounded-xl bg-slate-200 dark:bg-slate-800 sm:min-h-[210px]"><motion.div key={current.src} initial={reduceMotion ? false : { opacity: 0, x: 35 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.35 }} className="flex w-full justify-center"><Image src={current.src} alt={current.label} width={1088} height={906} className="max-h-[31vh] w-full object-contain"/></motion.div><button type="button" aria-label="Captura anterior" onClick={() => setIndex((index - 1 + shots.length) % shots.length)} className="absolute left-2 rounded-full bg-slate-950/80 p-3 text-white"><ArrowLeft size={18}/></button><button type="button" aria-label="Captura siguiente" onClick={() => setIndex((index + 1) % shots.length)} className="absolute right-2 rounded-full bg-slate-950/80 p-3 text-white"><ArrowRight size={18}/></button></div><p className="mt-3 text-center font-sans text-sm text-slate-600 dark:text-slate-300" aria-live="polite">{current.label} · {index + 1} / {shots.length}</p></div>;
 }
 
 export default function ProjectsSection() {
@@ -44,14 +59,14 @@ export default function ProjectsSection() {
           <DialogTrigger asChild><button type="button" className={styles.monitorButton} aria-label={`Ver detalles de ${project.title}`}>
             <span className={styles.browserBar} aria-hidden="true"><i/><i/><i/><span/></span>
             <ScreenContent project={project}/>
-            <span className={styles.monitorFooter}><span>Ver proyecto</span><ArrowUpRight size={16}/></span>
+            <span className={styles.monitorFooter}>Ver proyecto <ArrowUpRight size={16}/></span>
           </button></DialogTrigger>
           <div className={styles.monitorNeck} aria-hidden="true"/><div className={styles.monitorBase} aria-hidden="true"/>
         </motion.div>
         </AnimatePresence>
-        <DialogContent className="max-h-[90dvh] max-w-3xl overflow-y-auto rounded-2xl border-slate-300 bg-white p-0 dark:border-white/10 dark:bg-slate-950">
-          <div className="relative aspect-video overflow-hidden"><ScreenContent project={project}/></div>
-          <div className="space-y-5 p-6 sm:p-9"><p className="font-mono text-xs tracking-widest text-violet-600 dark:text-violet-300">{project.category}</p><DialogTitle className="text-3xl leading-tight sm:text-4xl">{project.title}</DialogTitle><DialogDescription className="font-sans text-base leading-7 text-slate-600 dark:text-slate-300">{project.description}</DialogDescription><div><h4 className="mb-2 text-sm">¿Qué hice?</h4><p className="font-sans leading-7 text-slate-600 dark:text-slate-300">{project.contribution}</p></div><div className="flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-slate-300 px-3 py-1 font-sans text-xs dark:border-white/15">{tag}</span>)}</div>{project.repository && <a href={project.repository} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-sans font-bold text-violet-600 hover:underline dark:text-violet-300">Ver repositorio <ArrowUpRight size={18}/></a>}</div>
+        <DialogContent className="max-h-[90dvh] max-w-2xl overflow-y-auto rounded-2xl border-slate-300 bg-white p-0 dark:border-white/10 dark:bg-slate-950">
+          <ProjectScreenshots key={project.title} project={project}/>
+          <div className="space-y-3 p-5 sm:p-6"><p className="font-mono text-xs tracking-widest text-violet-600 dark:text-violet-300">{project.category}</p><DialogTitle className="text-2xl leading-tight sm:text-3xl">{project.title}</DialogTitle><DialogDescription className="font-sans text-base leading-7 text-slate-600 dark:text-slate-300">{project.description}</DialogDescription><div><h4 className="mb-2 text-sm">¿Qué hice?</h4><p className="font-sans leading-7 text-slate-600 dark:text-slate-300">{project.contribution}</p></div><div className="flex flex-wrap gap-2">{project.tags.map(tag => <span key={tag} className="rounded-full border border-slate-300 px-3 py-1 font-sans text-xs dark:border-white/15">{tag}</span>)}</div>{project.repository && <a href={project.repository} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-sans font-bold text-violet-600 hover:underline dark:text-violet-300"><Github size={18}/> Ver en GitHub <ArrowUpRight size={18}/></a>}</div>
         </DialogContent>
       </Dialog>
       <motion.button key={`right-${next}`} initial={reduceMotion ? { opacity: 0 } : { opacity: 0, x: 45, rotateY: -25, rotateZ: 2, scale: 0.9 }} animate={{ opacity: 1, x: 0, rotateY: -25, rotateZ: 2, scale: 1 }} transition={{ duration: 0.3 }} type="button" onClick={() => move(1)} aria-label={`Ver ${portfolioProjects[next].title}`} className={`${styles.sideScreen} ${styles.sideRight}`}><ScreenContent project={portfolioProjects[next]} compact /></motion.button>
@@ -62,6 +77,14 @@ export default function ProjectsSection() {
     <div className="mt-8 text-center"><a href="https://github.com/gaboiouu" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 font-sans font-bold text-violet-600 hover:underline dark:text-violet-300">Visita mi GitHub <ArrowUpRight size={18}/></a></div>
   </section>;
 }
+
+
+
+
+
+
+
+
 
 
 
