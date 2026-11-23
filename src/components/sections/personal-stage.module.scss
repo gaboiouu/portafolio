@@ -30,6 +30,8 @@
   .stations::before { top: 320px; }
 }
 
+
+
 /* Sculpted keycaps: narrower top, flared walls and a deep front edge. */
 .key {
   position: relative;
@@ -74,4 +76,19 @@
   .stationName { font-size:16px; }
   .stations::before { top:349px; }
   .stationSlot .bubble { width:210px; bottom:calc(100% - 195px); }
+}
+
+@media (max-width: 700px) {
+  .experienceSection { background: hsl(var(--background) / .96); }
+  .stations { grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: visible; gap: 2px; padding: 30px 0 0; }
+  .stationSlot { padding-top: 0; }
+  .stationSlot .bubble { display: none; }
+  .stations::before { top: 98px; left: 10%; right: 10%; }
+  .station { padding: 0 2px; }
+  .pedestal { width: min(100%, 72px); height: 34px; margin: 40px 0 14px; }
+  .pedestal::before { bottom: 12px; }
+  .pedestal svg { width: 48px; height: 48px; left: 50%; bottom: 15px; transform: translateX(-50%); }
+  .station:hover svg { transform: translateX(-50%); }
+  .stationName { font-size: 11px; line-height: 1.2; padding: 6px 3px; overflow-wrap: anywhere; }
+  .date { font-size: 9px; text-align: center; }
 }

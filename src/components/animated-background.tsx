@@ -21,7 +21,7 @@ const STATES = {
       rotation: { x: 0, y: 0, z: 0 },
     },
     mobile: {
-      scale: { x: 0.15, y: 0.15, z: 0.15 },
+      scale: { x: 0.11, y: 0.11, z: 0.11 },
       position: { x: 0, y: -200, z: 0 },
       rotation: { x: 0, y: 0, z: 0 },
     },
@@ -57,11 +57,11 @@ const STATES = {
       },
     },
     mobile: {
-      scale: { x: 0.2, y: 0.2, z: 0.2 },
-      position: { x: 0, y: -40, z: 0 },
+      scale: { x: 0.14, y: 0.14, z: 0.14 },
+      position: { x: 0, y: -60, z: 0 },
       rotation: {
         x: 0,
-        y: Math.PI / 6,
+        y: Math.PI / 12,
         z: 0,
       },
     },
@@ -352,7 +352,8 @@ const AnimatedBackground = () => {
     splineApp.addEventListener("keyDown", (e) => {
       if (!splineApp) return;
       const skill = SKILLS[e.target.name as SkillNames];
-      if (skill) setSelectedSkill(skill);
+      if (!skill) return;
+      setSelectedSkill(skill);
       splineApp.setVariable("heading", skill.label);
       splineApp.setVariable("desc", skill.shortDescription);
     });

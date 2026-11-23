@@ -18,14 +18,14 @@ const HeroSection = () => {
   const { isLoading } = usePreloader();
 
   return (
-    <section id="hero" className={cn("relative w-full h-screen")}>
+    <section id="hero" className={cn("relative w-full min-h-[100svh]")}>
       <div className="grid md:grid-cols-2">
         <div
           className={cn(
-            "h-[calc(100dvh-3rem)] md:h-[calc(100dvh-4rem)] z-[2]",
+            "min-h-[100svh] z-[2]",
             "col-span-1",
             "flex flex-col justify-start md:justify-center items-center md:items-start",
-            "pt-28 sm:pt-0 sm:pb-32 md:p-24 lg:p-40 xl:p-48"
+            "px-5 pb-24 pt-28 sm:pb-32 md:px-12 md:py-24 lg:px-20 xl:px-28"
           )}
         >
           {!isLoading && (
@@ -44,8 +44,8 @@ const HeroSection = () => {
                 </BlurIn>
                 <BlurIn delay={1}><h1
                         className={cn(
-                          "font-thin text-6xl text-transparent text-slate-800 ml-1 text-left",
-                          "cursor-default text-edge-outline font-display sm:text-7xl md:text-9xl "
+                          "font-thin text-[clamp(3rem,13vw,6rem)] leading-none text-transparent text-slate-800 ml-1 text-left",
+                          "cursor-default text-edge-outline font-display lg:text-8xl "
                         )}
                       >
                         {config.author.split(" ")[0]}
@@ -57,7 +57,7 @@ const HeroSection = () => {
                   <p
                     className={cn(
                       "md:self-start md:mt-4 font-thin text-md text-slate-500 dark:text-zinc-400 ml-3",
-                      "cursor-default font-display sm:text-xl md:text-xl whitespace-nowrap bg-clip-text "
+                      "cursor-default font-display sm:text-xl md:text-xl bg-clip-text "
                     )}
                   >
                     Ingeniero &amp; Desarrollador Full Stack Junior

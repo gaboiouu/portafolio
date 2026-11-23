@@ -19,12 +19,8 @@ const config = {
     "Spline",
   ],
   author: "Aarón Silva",
-  email: "silvagabo1200@gmail.com",
-  site: "https://aaronsilva.com",
-
-  get ogImg() {
-    return this.site + "/assets/seo/og-image.png";
-  },
+  email: "silvachorresaaron19@gmail.com",
+  site: process.env.NEXT_PUBLIC_SITE_URL || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : undefined),
   social: {
     twitter: "https://x.com/",
     linkedin: "https://www.linkedin.com/in/aar%C3%B3n-gabriel-silva-chorres-b13a50370/",
