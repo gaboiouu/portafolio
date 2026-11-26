@@ -567,6 +567,11 @@ const AnimatedBackground = ({ onReady }: { onReady: () => void }) => {
         <Spline
           ref={splineContainer}
           onLoad={(app: Application) => {
+            // Limit the WebGL drawing buffer while preserving the canvas's CSS size.
+            const renderer = (app as Application & {
+              _renderer?: { setPixelRatio?: (ratio: number) => void };
+            })._renderer;
+            renderer?.setPixelRatio?.(Math.min(window.devicePixelRatio || 1, 0.75));
             setSplineApp(app);
             bypassLoading();
           }}
