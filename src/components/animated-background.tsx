@@ -110,7 +110,7 @@ const STATES = {
 
 type Section = "hero" | "about" | "skills" | "projects" | "contact";
 
-const AnimatedBackground = () => {
+const AnimatedBackground = ({ onReady }: { onReady: () => void }) => {
   const { isLoading, bypassLoading } = usePreloader();
   const { theme } = useTheme();
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -298,6 +298,7 @@ const AnimatedBackground = () => {
     await sleep(400);
     kbd.visible = true;
     setKeyboardRevealed(true);
+    onReady();
     console.log(activeSection);
     gsap.fromTo(
       kbd?.scale,
