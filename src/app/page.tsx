@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import SmoothScroll from "@/components/smooth-scroll";
 import { cn } from "@/lib/utils";
@@ -12,16 +12,35 @@ import HeroSection from "@/components/sections/hero";
 import { AboutSection, ServicesSection, ExperienceSection } from "@/components/sections/personal";
 
 function MainPage() {
-  const [sceneReady, setSceneReady] = useState(false);
+  const [showScene, setShowScene] = useState(false);
+
+  useEffect(() => {
+    let observer: IntersectionObserver | undefined;
+      const skills = document.getElementById("skills");
+      if (skills && "IntersectionObserver" in window) {
+        observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            setShowScene(true);
+            observer?.disconnect();
+          }
+        }, { rootMargin: "150px 0px" });
+        observer.observe(skills);
+      } else {
+        setShowScene(true);
+      }
+    return () => {
+      observer?.disconnect();
+    };
+  }, []);
 
   return (
     <>
       <SmoothScroll>
         <main className={cn("bg-slate-100 dark:bg-transparent")}>
           <div className="top-0 z-0 fixed w-full h-screen">
-            <AnimatedBackground onReady={() => setSceneReady(true)} />
+            {showScene && <AnimatedBackground />}
           </div>
-          <HeroSection sceneReady={sceneReady} />
+          <HeroSection onActivateScene={() => setShowScene(true)} sceneActive={showScene} />
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />
