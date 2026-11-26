@@ -15,10 +15,7 @@ function MainPage() {
   const [showScene, setShowScene] = useState(false);
 
   useEffect(() => {
-    const mobile = window.matchMedia("(max-width: 767px)");
-    let timer: number | undefined;
     let observer: IntersectionObserver | undefined;
-    if (mobile.matches) {
       const skills = document.getElementById("skills");
       if (skills && "IntersectionObserver" in window) {
         observer = new IntersectionObserver(([entry]) => {
@@ -31,11 +28,7 @@ function MainPage() {
       } else {
         setShowScene(true);
       }
-    } else {
-      timer = window.setTimeout(() => setShowScene(true), 1200);
-    }
     return () => {
-      if (timer !== undefined) window.clearTimeout(timer);
       observer?.disconnect();
     };
   }, []);
