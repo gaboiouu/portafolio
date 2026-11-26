@@ -10,6 +10,7 @@ import { useMediaQuery } from "@/hooks/use-media-query";
 import { usePreloader } from "./preloader";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/navigation";
+import { playKeyboardSound } from "@/lib/keyboard-sound";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -202,7 +203,6 @@ const AnimatedBackground = ({ onReady }: { onReady: () => void }) => {
 
   // initialize gsap animations
   useEffect(() => {
-    handleSplineInteractions();
     handleGsapAnimations();
     setBongoAnimation(getBongoAnimation());
     setKeycapAnimtations(getKeycapsAnimation());
@@ -343,23 +343,34 @@ const AnimatedBackground = ({ onReady }: { onReady: () => void }) => {
       );
     });
   };
-  const handleSplineInteractions = () => {
+  useEffect(() => {
     if (!splineApp) return;
-    splineApp.addEventListener("keyUp", (e) => {
-      if (!splineApp) return;
+    const onKeyUp = () => {
       splineApp.setVariable("heading", "");
       splineApp.setVariable("desc", "");
-    });
-    splineApp.addEventListener("keyDown", (e) => {
-      if (!splineApp) return;
+    };
+    const onKeyDown = (e: SplineEvent) => {
       const skill = SKILLS[e.target.name as SkillNames];
       if (!skill) return;
+      playKeyboardSound();
       setSelectedSkill(skill);
       splineApp.setVariable("heading", skill.label);
       splineApp.setVariable("desc", skill.shortDescription);
-    });
+    };
+    const onMouseDown = (e: SplineEvent) => {
+      if (SKILLS[e.target.name as SkillNames]) playKeyboardSound();
+    };
+    splineApp.addEventListener("keyUp", onKeyUp);
+    splineApp.addEventListener("keyDown", onKeyDown);
+    splineApp.addEventListener("mouseDown", onMouseDown);
     splineApp.addEventListener("mouseHover", handleMouseHover);
-  };
+    return () => {
+      splineApp.removeEventListener("keyUp", onKeyUp);
+      splineApp.removeEventListener("keyDown", onKeyDown);
+      splineApp.removeEventListener("mouseDown", onMouseDown);
+      splineApp.removeEventListener("mouseHover", handleMouseHover);
+    };
+  }, [splineApp]);
   const handleGsapAnimations = () => {
     if (!splineApp) return;
     const kbd: SPEObject | undefined = splineApp.findObjectByName("keyboard");
