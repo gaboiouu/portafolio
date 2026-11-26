@@ -1,35 +1,27 @@
 .introduction {
-  display: none !important;
-  height: 100dvh;
-  width: 100dvw;
-  display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding-inline: 60px;
-  padding-bottom: 30px;
   position: fixed;
-  z-index: 99;
-  // TODO: Add a better color instead of just the background to make it pop more
-  background-color: hsl(var(--background));
-  svg {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: calc(100% + 300px);
-    path {
-      fill: hsl(var(--background));
-    }
-  }
+  right: 32px;
+  bottom: 24px;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   p {
+    margin: 0;
     display: flex;
     color: hsl(var(--foreground));
-    font-size: 72px;
-    align-items: center;
-    position: absolute;
-    z-index: 1;
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    opacity: 0.9;
   }
 }
 
 @media (max-width: 767px) {
-  .introduction { display: none; }
+  .introduction {
+    right: 20px;
+    bottom: 20px;
+  }
 }

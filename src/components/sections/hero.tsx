@@ -99,21 +99,6 @@ const HeroSection = ({ sceneReady }: { sceneReady?: boolean }) => {
         </div>
         <div className="grid col-span-1"></div>
       </div>
-      {!sceneReady && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute bottom-20 left-1/2 z-[2] flex w-full max-w-sm -translate-x-1/2 flex-col items-center px-5 transition-opacity duration-700 md:bottom-auto md:left-auto md:right-[4%] md:top-1/2 md:w-[46%] md:max-w-2xl md:-translate-x-0 md:-translate-y-1/2"
-        >
-          <img
-            src="/assets/keyboard-preview-soft.webp"
-            alt=""
-            width={640}
-            height={436}
-            fetchPriority="high"
-            className="w-full"
-          />
-        </div>
-      )}
       <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
         <ScrollDownIcon />
       </div>
