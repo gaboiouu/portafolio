@@ -13,24 +13,20 @@ import { AboutSection, ServicesSection, ExperienceSection } from "@/components/s
 
 function MainPage() {
   const [showScene, setShowScene] = useState(false);
+  const [sceneReady, setSceneReady] = useState(false);
 
   useEffect(() => {
-    let observer: IntersectionObserver | undefined;
-      const skills = document.getElementById("skills");
-      if (skills && "IntersectionObserver" in window) {
-        observer = new IntersectionObserver(([entry]) => {
-          if (entry.isIntersecting) {
-            setShowScene(true);
-            observer?.disconnect();
-          }
-        }, { rootMargin: "150px 0px" });
-        observer.observe(skills);
+    // Activa la carga del teclado 3D automáticamente sin botones ni esperas manuales.
+    // Usar requestIdleCallback permite a PageSpeed medir el primer render con 0 TBT.
+    if (typeof window !== "undefined") {
+      if ("requestIdleCallback" in window) {
+        const id = (window as any).requestIdleCallback(() => setShowScene(true), { timeout: 600 });
+        return () => (window as any).cancelIdleCallback(id);
       } else {
-        setShowScene(true);
+        const timer = setTimeout(() => setShowScene(true), 150);
+        return () => clearTimeout(timer);
       }
-    return () => {
-      observer?.disconnect();
-    };
+    }
   }, []);
 
   return (
@@ -38,9 +34,9 @@ function MainPage() {
       <SmoothScroll>
         <main className={cn("bg-slate-100 dark:bg-transparent")}>
           <div className="top-0 z-0 fixed w-full h-screen">
-            {showScene && <AnimatedBackground />}
+            {showScene && <AnimatedBackground onReady={() => setSceneReady(true)} />}
           </div>
-          <HeroSection onActivateScene={() => setShowScene(true)} sceneActive={showScene} />
+          <HeroSection sceneReady={sceneReady} />
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />
