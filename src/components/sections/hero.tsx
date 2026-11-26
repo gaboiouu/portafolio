@@ -100,7 +100,7 @@ const HeroSection = ({ onActivateScene, sceneActive }: { onActivateScene: () => 
         <div className="grid col-span-1"></div>
       </div>
       {!sceneActive && <div className="pointer-events-auto absolute bottom-20 left-1/2 z-[2] flex w-full max-w-sm -translate-x-1/2 flex-col items-center px-5 md:hidden">
-        <img src="/assets/keyboard-preview.webp" alt="" width={640} height={436} className="w-full [mask-image:radial-gradient(ellipse,black_55%,transparent_77%)]" />
+        <img src="/assets/keyboard-preview.webp" alt="" width={640} height={436} fetchPriority="high" className="w-full [mask-image:radial-gradient(ellipse,black_55%,transparent_77%)]" />
         <button type="button" onClick={onActivateScene} className="rounded-full border border-violet-400 bg-slate-950 px-5 py-2 font-sans text-sm font-semibold text-white">Activar teclado 3D</button>
       </div>}
       <div className="absolute bottom-10 left-[50%] translate-x-[-50%]">
