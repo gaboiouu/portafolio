@@ -36,7 +36,7 @@ const ContactSection = () => {
               <a
                 target="_blank"
                 href={`mailto:${config.email}`}
-                className="break-all text-violet-600 dark:text-violet-300 cursor-can-hover rounded-lg"
+                className="break-all text-violet-600 dark:text-violet-300 underline underline-offset-2 cursor-can-hover rounded-lg"
               >
                 {config.email}
               </a>{" "}

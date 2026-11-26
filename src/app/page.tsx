@@ -15,8 +15,29 @@ function MainPage() {
   const [showScene, setShowScene] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setShowScene(true), 1200);
-    return () => window.clearTimeout(timer);
+    const mobile = window.matchMedia("(max-width: 767px)");
+    let timer: number | undefined;
+    let observer: IntersectionObserver | undefined;
+    if (mobile.matches) {
+      const skills = document.getElementById("skills");
+      if (skills && "IntersectionObserver" in window) {
+        observer = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) {
+            setShowScene(true);
+            observer?.disconnect();
+          }
+        }, { rootMargin: "150px 0px" });
+        observer.observe(skills);
+      } else {
+        setShowScene(true);
+      }
+    } else {
+      timer = window.setTimeout(() => setShowScene(true), 1200);
+    }
+    return () => {
+      if (timer !== undefined) window.clearTimeout(timer);
+      observer?.disconnect();
+    };
   }, []);
 
   return (
@@ -26,7 +47,7 @@ function MainPage() {
           <div className="top-0 z-0 fixed w-full h-screen">
             {showScene && <AnimatedBackground />}
           </div>
-          <HeroSection />
+          <HeroSection onActivateScene={() => setShowScene(true)} sceneActive={showScene} />
           <AboutSection />
           <SkillsSection />
           <ProjectsSection />
