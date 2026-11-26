@@ -8,15 +8,12 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { usePreloader } from "../preloader";
 import { BlurIn, BoxReveal } from "../reveal-animations";
 import ScrollDownIcon from "../scroll-down-icon";
 import { SiGithub, SiLinkedin } from "react-icons/si";
 import { config } from "@/data/config";
 
 const HeroSection = () => {
-  const { isLoading } = usePreloader();
-
   return (
     <section id="hero" className={cn("relative w-full min-h-[100svh]")}>
       <div className="grid md:grid-cols-2">
@@ -28,7 +25,7 @@ const HeroSection = () => {
             "px-5 pb-24 pt-28 sm:pb-32 md:px-12 md:py-24 lg:px-20 xl:px-28"
           )}
         >
-          {!isLoading && (
+          {(
             <>
               <div className="">
                 <BlurIn delay={0.7}>

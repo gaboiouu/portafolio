@@ -22,11 +22,13 @@ export default function Particles({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasContainerRef = useRef<HTMLDivElement>(null);
   const context = useRef<CanvasRenderingContext2D | null>(null);
+  const animationFrame = useRef<number>();
+  const lastFrame = useRef(0);
   const circles = useRef<any[]>([]);
   const mousePosition = useMousePosition();
   const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
   const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
-  const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
+  const dpr = typeof window !== "undefined" ? Math.min(window.devicePixelRatio, 1.5) : 1;
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -38,6 +40,7 @@ export default function Particles({
 
     return () => {
       window.removeEventListener("resize", initCanvas);
+      if (animationFrame.current !== undefined) cancelAnimationFrame(animationFrame.current);
     };
   }, []);
 
@@ -167,7 +170,10 @@ export default function Particles({
     return remapped > 0 ? remapped : 0;
   };
 
-  const animate = () => {
+  const animate = (time = 0) => {
+    animationFrame.current = window.requestAnimationFrame(animate);
+    if (time - lastFrame.current < 1000 / 30) return;
+    lastFrame.current = time;
     clearContext();
     circles.current.forEach((circle: Circle, i: number) => {
       // Handle the alpha value
@@ -224,7 +230,6 @@ export default function Particles({
         );
       }
     });
-    window.requestAnimationFrame(animate);
   };
 
   return (
